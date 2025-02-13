@@ -10,6 +10,10 @@
       content="width=device-width,initial-scale=1.0,viewport-fit=cover"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <style>
       html,
       body {
@@ -21,9 +25,15 @@
         touch-action: none;
       }
 
+      canvas {
+        width: 100vw;
+        height: 100vh;
+      }
+
       * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
       }
     </style>
   </head>
@@ -32,10 +42,29 @@
     <canvas id="pinkboard" style="vertical-align: top"></canvas>
 
     <script>
-      // 初始化 画布大小
+      // 修改画布初始化代码
+      function initCanvas() {
+        let canvas = document.getElementById("pinkboard");
+        let pixelRatio = window.devicePixelRatio || 1;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        canvas.width = width * pixelRatio;
+        canvas.height = height * pixelRatio;
+
+        let ctx = canvas.getContext("2d");
+        ctx.scale(pixelRatio, pixelRatio);
+      }
+
+      // 监听窗口大小变化
+      window.addEventListener("resize", initCanvas);
+
+      // 替换原有的画布初始化代码
       let canvas = document.getElementById("pinkboard");
-      canvas.height = window.screen.availHeight;
-      canvas.width = window.screen.availWidth;
+      initCanvas();
 
       class AllLover {
         constructor() {

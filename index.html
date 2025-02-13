@@ -2,6 +2,10 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>给🍊的一个小秘密</title>
     <style>
       body {
@@ -20,6 +24,8 @@
         border-radius: 20px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         max-width: 600px;
+        width: 90%;
+        margin: 0 15px;
         position: relative;
       }
       .step {
@@ -88,6 +94,25 @@
         100% {
           transform: translateY(-100vh) rotate(360deg);
           opacity: 0;
+        }
+      }
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 16px;
+        }
+
+        button {
+          padding: 12px 24px;
+          font-size: 16px;
+        }
+
+        .options {
+          flex-direction: column;
+          gap: 0.8rem;
         }
       }
     </style>
