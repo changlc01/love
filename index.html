@@ -43,6 +43,14 @@
           opacity: 1;
         }
       }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
       h1 {
         color: #ff1493;
         margin-bottom: 2rem;
@@ -197,31 +205,87 @@
       setInterval(createHeart, 300);
 
       function nextStep(step) {
-        document
-          .querySelectorAll(".step")
-          .forEach((s) => s.classList.remove("active"));
-        document.getElementById("step" + step).classList.add("active");
+        const currentStep = document.querySelector(".step.active");
+        if (currentStep) {
+          currentStep.style.animation = "fadeOut 0.5s";
+          setTimeout(() => {
+            currentStep.classList.remove("active");
+            const nextStepElement = document.getElementById("step" + step);
+            if (nextStepElement) {
+              nextStepElement.classList.add("active");
+              nextStepElement.style.animation = "fadeIn 0.5s";
+            }
+          }, 500);
+        }
       }
 
+      // 添加防抖变量
+      let isAnswering = false;
+
       function handleLoveAnswer(answer) {
+        // 如果正在处理答案，直接返回
+        if (isAnswering) return;
+
+        // 设置正在处理标志
+        isAnswering = true;
+
         const responses = {
           yes: "太好了！我会一直对你好的 ❤️",
           no: "那...再给我一次机会好吗？<br/>因为我真的很喜欢你...<br/>而且我保证会一直对你好的！",
         };
-        document.getElementById("loveResponse").innerHTML = responses[answer];
+
         if (answer === "no") {
-          for (let i = 0; i < 10; i++) {
-            setTimeout(createHeart, i * 100);
-          }
-          setTimeout(() => {
-            nextStep(5);
-          }, 3000);
+          // 禁用按钮样式
+          document.querySelectorAll(".options button").forEach((btn) => {
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+          });
+
+          // 创建一个 Promise 来处理动画序列
+          const animationSequence = async () => {
+            // 播放心形动画
+            for (let i = 0; i < 10; i++) {
+              await new Promise((resolve) => setTimeout(resolve, 100));
+              createHeart();
+            }
+
+            // 显示响应文本到当前步骤
+            document.getElementById("step5").querySelector("p").innerHTML =
+              responses[answer];
+
+            // 替换按钮组为单个继续按钮
+            const optionsDiv = document.querySelector(".options");
+            optionsDiv.innerHTML =
+              '<button onclick="resetQuestion()">继续</button>';
+
+            // 重置状态
+            isAnswering = false;
+          };
+
+          // 执行动画序列
+          animationSequence();
         } else {
+          // 如果是愿意，显示最终响应并准备跳转
+          document.getElementById("loveResponse").innerHTML = responses[answer];
           nextStep(6);
           for (let i = 0; i < 15; i++) {
             setTimeout(createHeart, i * 100);
           }
         }
+      }
+
+      // 添加重置问题的函数
+      function resetQuestion() {
+        // 重置文本
+        document.getElementById("step5").querySelector("p").innerHTML =
+          "可以做我女朋友吗？";
+
+        // 重置按钮组
+        const optionsDiv = document.querySelector(".options");
+        optionsDiv.innerHTML = `
+          <button onclick="handleLoveAnswer('yes')">愿意 ❤️</button>
+          <button onclick="handleLoveAnswer('no')">再想想...</button>
+        `;
       }
 
       function showFinalLove() {
