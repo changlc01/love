@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>给🍊的一个小秘密</title>
+    <style>
+      body {
+        background: linear-gradient(45deg, #ffb6c1, #ffd700);
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Microsoft YaHei", sans-serif;
+      }
+      .container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        position: relative;
+      }
+      .step {
+        display: none;
+        animation: fadeIn 1s;
+      }
+      .step.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      h1 {
+        color: #ff1493;
+        margin-bottom: 2rem;
+      }
+      p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+      .options {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+      button {
+        background: #ff1493;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s;
+      }
+      button:hover {
+        transform: scale(1.1);
+        background: #ff69b4;
+      }
+      .floating-hearts {
+        position: fixed;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .heart {
+        position: absolute;
+        font-size: 20px;
+        animation: float 4s ease-in-out infinite;
+        opacity: 0;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="floating-hearts"></div>
+
+    <div class="container">
+      <div class="step active" id="step1">
+        <h1>亲爱的🍊：</h1>
+        <p>今天的阳光特别温暖，让我想起了你的笑容...</p>
+        <button onclick="nextStep(2)">继续</button>
+      </div>
+
+      <div class="step" id="step2">
+        <h1>🍊：</h1>
+        <p>你相信一见钟情吗？</p>
+        <div class="options">
+          <button onclick="handleAnswer('yes')">相信</button>
+          <button onclick="handleAnswer('no')">不相信</button>
+        </div>
+      </div>
+
+      <div class="step" id="step3">
+        <h1>🍊：</h1>
+        <p id="response"></p>
+        <button onclick="nextStep(4)">继续</button>
+      </div>
+
+      <div class="step" id="step4">
+        <h1>🍊：</h1>
+        <p>我有一个秘密想告诉你...</p>
+        <button onclick="showFinalLove()">想知道吗？</button>
+      </div>
+    </div>
+
+    <script>
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.querySelector(".floating-hearts").appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+
+      setInterval(createHeart, 300);
+
+      function nextStep(step) {
+        document
+          .querySelectorAll(".step")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById("step" + step).classList.add("active");
+      }
+
+      function handleAnswer(answer) {
+        const responses = {
+          yes: "其实我也相信，因为遇见你的那一刻，我就知道你是特别的...",
+          no: "没关系，但遇见你之后，我开始相信了...",
+        };
+        document.getElementById("response").textContent = responses[answer];
+        nextStep(3);
+      }
+
+      function showFinalLove() {
+        // 添加更多心形动画
+        for (let i = 0; i < 30; i++) {
+          setTimeout(createHeart, i * 100);
+        }
+        setTimeout(() => {
+          window.location.href = "love.html";
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
