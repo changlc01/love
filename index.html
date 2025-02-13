@@ -57,6 +57,11 @@
         display: flex;
         gap: 1rem;
         justify-content: center;
+        flex-wrap: wrap;
+      }
+      .options button {
+        min-width: 120px;
+        margin: 5px;
       }
       button {
         background: #ff1493;
@@ -111,7 +116,6 @@
         }
 
         .options {
-          flex-direction: column;
           gap: 0.8rem;
         }
       }
@@ -206,16 +210,21 @@
         };
         document.getElementById("loveResponse").innerHTML = responses[answer];
         if (answer === "no") {
+          for (let i = 0; i < 10; i++) {
+            setTimeout(createHeart, i * 100);
+          }
           setTimeout(() => {
-            nextStep(5); // 如果说不愿意，就重新回到询问步骤
+            nextStep(5);
           }, 3000);
         } else {
           nextStep(6);
+          for (let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 100);
+          }
         }
       }
 
       function showFinalLove() {
-        // 添加更多心形动画
         for (let i = 0; i < 30; i++) {
           setTimeout(createHeart, i * 100);
         }
