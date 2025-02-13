@@ -160,7 +160,22 @@
           在这个特别的日子里<br />
           我想正式地问你一个问题...
         </p>
-        <button onclick="showFinalLove()">可以做我女朋友吗？</button>
+        <button onclick="nextStep(5)">继续</button>
+      </div>
+
+      <div class="step" id="step5">
+        <h1>🍊：</h1>
+        <p>可以做我女朋友吗？</p>
+        <div class="options">
+          <button onclick="handleLoveAnswer('yes')">愿意 ❤️</button>
+          <button onclick="handleLoveAnswer('no')">再想想...</button>
+        </div>
+      </div>
+
+      <div class="step" id="step6">
+        <h1>🍊：</h1>
+        <p id="loveResponse"></p>
+        <button onclick="showFinalLove()">继续</button>
       </div>
     </div>
 
@@ -184,13 +199,19 @@
         document.getElementById("step" + step).classList.add("active");
       }
 
-      function handleAnswer(answer) {
+      function handleLoveAnswer(answer) {
         const responses = {
-          yes: "其实我也相信，因为遇见你的那一刻，我就知道你是特别的...",
-          no: "没关系，但遇见你之后，我开始相信了...",
+          yes: "太好了！我会一直对你好的 ❤️",
+          no: "那...再给我一次机会好吗？<br/>因为我真的很喜欢你...<br/>而且我保证会一直对你好的！",
         };
-        document.getElementById("response").textContent = responses[answer];
-        nextStep(3);
+        document.getElementById("loveResponse").innerHTML = responses[answer];
+        if (answer === "no") {
+          setTimeout(() => {
+            nextStep(5); // 如果说不愿意，就重新回到询问步骤
+          }, 3000);
+        } else {
+          nextStep(6);
+        }
       }
 
       function showFinalLove() {
